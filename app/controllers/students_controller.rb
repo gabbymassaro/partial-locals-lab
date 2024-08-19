@@ -21,7 +21,12 @@ class StudentsController < ApplicationController
   end
 
   def index
-    @students = Student.search(params[:query])
+    search = params[:query]
+    if search.present?
+      @students = Student.where("name LIKE ?", "%#{search}%")
+    else
+      @students = Student.all
+    end
     render 'index'
   end
 
